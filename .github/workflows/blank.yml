@@ -1,22 +1,29 @@
-name: Avica
- 
+name: Ngrok_Windows_Github_RDP (Sounds On)
+
 on:
   workflow_dispatch:
- 
+
 jobs:
   build:
-    name: Start Building...
-    runs-on: windows-latest
-    timeout-minutes: 360
- 
+    runs-on: windows-2022
+    timeout-minutes: 60
+    
     steps:
-      - name: Downloading & Installing Essentials
+      - name: Downloading Essentials
         run: |
-          Invoke-WebRequest -Uri "https://gitlab.com/makof01/avicatest/-/raw/main/download.bat" -OutFile "Downloads.bat"
+          Invoke-WebRequest -Uri https://gitlab.com/chamod12/ngrok-win10-rdp/-/raw/main/Downloads.bat -OutFile Downloads.bat
           cmd /c Downloads.bat
- 
-      - name: Show Website
-        run: cmd /c show.bat
- 
-      - name: Time Counter
+
+      - name: Connecting Ngrok Account
+        run: ngrok config add-authtoken $Env:NGROK_AUTH_TOKEN
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+          
+      - name: Enabling RDP Access
+        run: cmd /c Acess.bat       
+
+      - name: Log In To Remote Desktop Protocol
+        run: cmd /c startaudio.bat
+
+      - name: Time Count
         run: cmd /c loop.bat
